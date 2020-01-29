@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Sistema_CalificacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'Sistema_Calificacion.dbo.Administrador' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="Administrador">
+          <Property Name="CEDULA_Admin" Type="varchar" MaxLength="20" />
+          <Property Name="Password_Admin" Type="varchar" MaxLength="20" />
+        </EntityType>-->
+        <EntityType Name="ALUMNOS">
+          <Key>
+            <PropertyRef Name="ID_ALUMN" />
+          </Key>
+          <Property Name="ID_ALUMN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_REPR" Type="int" />
+          <Property Name="NOMBRE_ALUMN" Type="varchar" MaxLength="20" />
+          <Property Name="APELLIDO_ALUMN" Type="varchar" MaxLength="20" />
+          <Property Name="CEDULA_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="PASS_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="DIRECCION_ALUMN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FECHA_NACIMINETO_ALUMN" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMPLEADOS">
+          <Key>
+            <PropertyRef Name="ID_EMPL" />
+          </Key>
+          <Property Name="ID_EMPL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="APELLIDO_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CEDULA_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="PASS_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="DIRECCION_EMPL" Type="varchar" MaxLength="50" />
+          <Property Name="TELEFONO_EMPL" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="TITULO_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MATRICULA">
+          <Key>
+            <PropertyRef Name="ID_MATRICULA" />
+          </Key>
+          <Property Name="ID_MATRICULA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_ALUMN" Type="int" />
+          <Property Name="ID_NIVEL" Type="int" />
+          <Property Name="FECHA_HORA" Type="datetime" />
+          <Property Name="COSTO" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="PARALELO" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NIVELES">
+          <Key>
+            <PropertyRef Name="ID_NIVEL" />
+          </Key>
+          <Property Name="ID_NIVEL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE_NIVEL" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOTAS">
+          <Key>
+            <PropertyRef Name="ID_NOTA" />
+          </Key>
+          <Property Name="ID_NOTA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_ALUMN" Type="int" />
+          <Property Name="ID_PERIODO" Type="int" />
+          <Property Name="ID_MATER" Type="int" />
+          <Property Name="NOTA" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="FECH_HORA_REG" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERIODOS_NOTAS">
+          <Key>
+            <PropertyRef Name="ID_PERIODO" />
+          </Key>
+          <Property Name="ID_PERIODO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NUM_PERIODO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REPRESENTANTE">
+          <Key>
+            <PropertyRef Name="ID_REPR" />
+          </Key>
+          <Property Name="ID_REPR" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="APELLIDO_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CEDULA_REPR" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="TRABAJO_REPR" Type="varchar" MaxLength="20" />
+          <Property Name="DIR_TRABAJO_REPR" Type="varchar" MaxLength="20" />
+          <Property Name="TLF_TRABAJO_REPR" Type="varchar" MaxLength="20" />
+          <Property Name="TELEFONO_REPR" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="CELULAR_REPR" Type="varchar" MaxLength="15" />
+          <Property Name="ROL_REPR_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ALUMNOS_RELATIONS_REPRESEN">
+          <End Role="REPRESENTANTE" Type="Self.REPRESENTANTE" Multiplicity="0..1" />
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPRESENTANTE">
+              <PropertyRef Name="ID_REPR" />
+            </Principal>
+            <Dependent Role="ALUMNOS">
+              <PropertyRef Name="ID_REPR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATRICUL_RELATIONS_ALUMNOS">
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNOS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_ALUMN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATRICUL_RELATIONS_NIVELES">
+          <End Role="NIVELES" Type="Self.NIVELES" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NIVELES">
+              <PropertyRef Name="ID_NIVEL" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_NIVEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTAS_PERTENECE_PERIODOS">
+          <End Role="PERIODOS_NOTAS" Type="Self.PERIODOS_NOTAS" Multiplicity="0..1" />
+          <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODOS_NOTAS">
+              <PropertyRef Name="ID_PERIODO" />
+            </Principal>
+            <Dependent Role="NOTAS">
+              <PropertyRef Name="ID_PERIODO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTAS_TIENE_ALUMNOS">
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+          <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNOS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Principal>
+            <Dependent Role="NOTAS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Sistema_CalificacionModelStoreContainer">
+          <EntitySet Name="ALUMNOS" EntityType="Self.ALUMNOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MATRICULA" EntityType="Self.MATRICULA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NIVELES" EntityType="Self.NIVELES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOTAS" EntityType="Self.NOTAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERIODOS_NOTAS" EntityType="Self.PERIODOS_NOTAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPRESENTANTE" EntityType="Self.REPRESENTANTE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ALUMNOS_RELATIONS_REPRESEN" Association="Self.FK_ALUMNOS_RELATIONS_REPRESEN">
+            <End Role="REPRESENTANTE" EntitySet="REPRESENTANTE" />
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATRICUL_RELATIONS_ALUMNOS" Association="Self.FK_MATRICUL_RELATIONS_ALUMNOS">
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATRICUL_RELATIONS_NIVELES" Association="Self.FK_MATRICUL_RELATIONS_NIVELES">
+            <End Role="NIVELES" EntitySet="NIVELES" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTAS_PERTENECE_PERIODOS" Association="Self.FK_NOTAS_PERTENECE_PERIODOS">
+            <End Role="PERIODOS_NOTAS" EntitySet="PERIODOS_NOTAS" />
+            <End Role="NOTAS" EntitySet="NOTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTAS_TIENE_ALUMNOS" Association="Self.FK_NOTAS_TIENE_ALUMNOS">
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+            <End Role="NOTAS" EntitySet="NOTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Sistema_CalificacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ALUMNOS">
+          <Key>
+            <PropertyRef Name="ID_ALUMN" />
+          </Key>
+          <Property Name="ID_ALUMN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_REPR" Type="Int32" />
+          <Property Name="NOMBRE_ALUMN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="APELLIDO_ALUMN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CEDULA_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PASS_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DIRECCION_ALUMN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FECHA_NACIMINETO_ALUMN" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="REPRESENTANTE" Relationship="Self.FK_ALUMNOS_RELATIONS_REPRESEN" FromRole="ALUMNOS" ToRole="REPRESENTANTE" />
+          <NavigationProperty Name="MATRICULA" Relationship="Self.FK_MATRICUL_RELATIONS_ALUMNOS" FromRole="ALUMNOS" ToRole="MATRICULA" />
+          <NavigationProperty Name="NOTAS" Relationship="Self.FK_NOTAS_TIENE_ALUMNOS" FromRole="ALUMNOS" ToRole="NOTAS" />
+        </EntityType>
+        <EntityType Name="EMPLEADOS">
+          <Key>
+            <PropertyRef Name="ID_EMPL" />
+          </Key>
+          <Property Name="ID_EMPL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="APELLIDO_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CEDULA_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PASS_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DIRECCION_EMPL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TELEFONO_EMPL" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TITULO_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MATRICULA">
+          <Key>
+            <PropertyRef Name="ID_MATRICULA" />
+          </Key>
+          <Property Name="ID_MATRICULA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_ALUMN" Type="Int32" />
+          <Property Name="ID_NIVEL" Type="Int32" />
+          <Property Name="FECHA_HORA" Type="DateTime" Precision="3" />
+          <Property Name="COSTO" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="PARALELO" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_MATRICUL_RELATIONS_ALUMNOS" FromRole="MATRICULA" ToRole="ALUMNOS" />
+          <NavigationProperty Name="NIVELES" Relationship="Self.FK_MATRICUL_RELATIONS_NIVELES" FromRole="MATRICULA" ToRole="NIVELES" />
+        </EntityType>
+        <EntityType Name="NIVELES">
+          <Key>
+            <PropertyRef Name="ID_NIVEL" />
+          </Key>
+          <Property Name="ID_NIVEL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE_NIVEL" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="MATRICULA" Relationship="Self.FK_MATRICUL_RELATIONS_NIVELES" FromRole="NIVELES" ToRole="MATRICULA" />
+        </EntityType>
+        <EntityType Name="NOTAS">
+          <Key>
+            <PropertyRef Name="ID_NOTA" />
+          </Key>
+          <Property Name="ID_NOTA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_ALUMN" Type="Int32" />
+          <Property Name="ID_PERIODO" Type="Int32" />
+          <Property Name="ID_MATER" Type="Int32" />
+          <Property Name="NOTA" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="FECH_HORA_REG" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_NOTAS_TIENE_ALUMNOS" FromRole="NOTAS" ToRole="ALUMNOS" />
+          <NavigationProperty Name="PERIODOS_NOTAS" Relationship="Self.FK_NOTAS_PERTENECE_PERIODOS" FromRole="NOTAS" ToRole="PERIODOS_NOTAS" />
+        </EntityType>
+        <EntityType Name="PERIODOS_NOTAS">
+          <Key>
+            <PropertyRef Name="ID_PERIODO" />
+          </Key>
+          <Property Name="ID_PERIODO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NUM_PERIODO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NOTAS" Relationship="Self.FK_NOTAS_PERTENECE_PERIODOS" FromRole="PERIODOS_NOTAS" ToRole="NOTAS" />
+        </EntityType>
+        <EntityType Name="REPRESENTANTE">
+          <Key>
+            <PropertyRef Name="ID_REPR" />
+          </Key>
+          <Property Name="ID_REPR" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="APELLIDO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CEDULA_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DIR_TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TLF_TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TELEFONO_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CELULAR_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ROL_REPR_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_ALUMNOS_RELATIONS_REPRESEN" FromRole="REPRESENTANTE" ToRole="ALUMNOS" />
+        </EntityType>
+        <Association Name="FK_ALUMNOS_RELATIONS_REPRESEN">
+          <End Role="REPRESENTANTE" Type="Self.REPRESENTANTE" Multiplicity="0..1" />
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPRESENTANTE">
+              <PropertyRef Name="ID_REPR" />
+            </Principal>
+            <Dependent Role="ALUMNOS">
+              <PropertyRef Name="ID_REPR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATRICUL_RELATIONS_ALUMNOS">
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNOS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_ALUMN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTAS_TIENE_ALUMNOS">
+          <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+          <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNOS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Principal>
+            <Dependent Role="NOTAS">
+              <PropertyRef Name="ID_ALUMN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATRICUL_RELATIONS_NIVELES">
+          <End Role="NIVELES" Type="Self.NIVELES" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NIVELES">
+              <PropertyRef Name="ID_NIVEL" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_NIVEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTAS_PERTENECE_PERIODOS">
+          <End Role="PERIODOS_NOTAS" Type="Self.PERIODOS_NOTAS" Multiplicity="0..1" />
+          <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODOS_NOTAS">
+              <PropertyRef Name="ID_PERIODO" />
+            </Principal>
+            <Dependent Role="NOTAS">
+              <PropertyRef Name="ID_PERIODO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Sistema_CalificacionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ALUMNOS" EntityType="Self.ALUMNOS" />
+          <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" />
+          <EntitySet Name="MATRICULA" EntityType="Self.MATRICULA" />
+          <EntitySet Name="NIVELES" EntityType="Self.NIVELES" />
+          <EntitySet Name="NOTAS" EntityType="Self.NOTAS" />
+          <EntitySet Name="PERIODOS_NOTAS" EntityType="Self.PERIODOS_NOTAS" />
+          <EntitySet Name="REPRESENTANTE" EntityType="Self.REPRESENTANTE" />
+          <AssociationSet Name="FK_ALUMNOS_RELATIONS_REPRESEN" Association="Self.FK_ALUMNOS_RELATIONS_REPRESEN">
+            <End Role="REPRESENTANTE" EntitySet="REPRESENTANTE" />
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATRICUL_RELATIONS_ALUMNOS" Association="Self.FK_MATRICUL_RELATIONS_ALUMNOS">
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTAS_TIENE_ALUMNOS" Association="Self.FK_NOTAS_TIENE_ALUMNOS">
+            <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+            <End Role="NOTAS" EntitySet="NOTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATRICUL_RELATIONS_NIVELES" Association="Self.FK_MATRICUL_RELATIONS_NIVELES">
+            <End Role="NIVELES" EntitySet="NIVELES" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTAS_PERTENECE_PERIODOS" Association="Self.FK_NOTAS_PERTENECE_PERIODOS">
+            <End Role="PERIODOS_NOTAS" EntitySet="PERIODOS_NOTAS" />
+            <End Role="NOTAS" EntitySet="NOTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Sistema_CalificacionModelStoreContainer" CdmEntityContainer="Sistema_CalificacionEntities">
+          <EntitySetMapping Name="ALUMNOS">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.ALUMNOS">
+              <MappingFragment StoreEntitySet="ALUMNOS">
+                <ScalarProperty Name="ID_ALUMN" ColumnName="ID_ALUMN" />
+                <ScalarProperty Name="ID_REPR" ColumnName="ID_REPR" />
+                <ScalarProperty Name="NOMBRE_ALUMN" ColumnName="NOMBRE_ALUMN" />
+                <ScalarProperty Name="APELLIDO_ALUMN" ColumnName="APELLIDO_ALUMN" />
+                <ScalarProperty Name="CEDULA_ALUMN" ColumnName="CEDULA_ALUMN" />
+                <ScalarProperty Name="PASS_ALUMN" ColumnName="PASS_ALUMN" />
+                <ScalarProperty Name="DIRECCION_ALUMN" ColumnName="DIRECCION_ALUMN" />
+                <ScalarProperty Name="FECHA_NACIMINETO_ALUMN" ColumnName="FECHA_NACIMINETO_ALUMN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLEADOS">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.EMPLEADOS">
+              <MappingFragment StoreEntitySet="EMPLEADOS">
+                <ScalarProperty Name="ID_EMPL" ColumnName="ID_EMPL" />
+                <ScalarProperty Name="NOMBRE_EMPL" ColumnName="NOMBRE_EMPL" />
+                <ScalarProperty Name="APELLIDO_EMPL" ColumnName="APELLIDO_EMPL" />
+                <ScalarProperty Name="CEDULA_ALUMN" ColumnName="CEDULA_ALUMN" />
+                <ScalarProperty Name="PASS_ALUMN" ColumnName="PASS_ALUMN" />
+                <ScalarProperty Name="DIRECCION_EMPL" ColumnName="DIRECCION_EMPL" />
+                <ScalarProperty Name="TELEFONO_EMPL" ColumnName="TELEFONO_EMPL" />
+                <ScalarProperty Name="TITULO_EMPL" ColumnName="TITULO_EMPL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MATRICULA">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.MATRICULA">
+              <MappingFragment StoreEntitySet="MATRICULA">
+                <ScalarProperty Name="ID_MATRICULA" ColumnName="ID_MATRICULA" />
+                <ScalarProperty Name="ID_ALUMN" ColumnName="ID_ALUMN" />
+                <ScalarProperty Name="ID_NIVEL" ColumnName="ID_NIVEL" />
+                <ScalarProperty Name="FECHA_HORA" ColumnName="FECHA_HORA" />
+                <ScalarProperty Name="COSTO" ColumnName="COSTO" />
+                <ScalarProperty Name="PARALELO" ColumnName="PARALELO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NIVELES">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.NIVELES">
+              <MappingFragment StoreEntitySet="NIVELES">
+                <ScalarProperty Name="ID_NIVEL" ColumnName="ID_NIVEL" />
+                <ScalarProperty Name="NOMBRE_NIVEL" ColumnName="NOMBRE_NIVEL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTAS">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.NOTAS">
+              <MappingFragment StoreEntitySet="NOTAS">
+                <ScalarProperty Name="ID_NOTA" ColumnName="ID_NOTA" />
+                <ScalarProperty Name="ID_ALUMN" ColumnName="ID_ALUMN" />
+                <ScalarProperty Name="ID_PERIODO" ColumnName="ID_PERIODO" />
+                <ScalarProperty Name="ID_MATER" ColumnName="ID_MATER" />
+                <ScalarProperty Name="NOTA" ColumnName="NOTA" />
+                <ScalarProperty Name="FECH_HORA_REG" ColumnName="FECH_HORA_REG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODOS_NOTAS">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.PERIODOS_NOTAS">
+              <MappingFragment StoreEntitySet="PERIODOS_NOTAS">
+                <ScalarProperty Name="ID_PERIODO" ColumnName="ID_PERIODO" />
+                <ScalarProperty Name="NUM_PERIODO" ColumnName="NUM_PERIODO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REPRESENTANTE">
+            <EntityTypeMapping TypeName="Sistema_CalificacionModel.REPRESENTANTE">
+              <MappingFragment StoreEntitySet="REPRESENTANTE">
+                <ScalarProperty Name="ID_REPR" ColumnName="ID_REPR" />
+                <ScalarProperty Name="NOMBRE_REPR" ColumnName="NOMBRE_REPR" />
+                <ScalarProperty Name="APELLIDO_REPR" ColumnName="APELLIDO_REPR" />
+                <ScalarProperty Name="CEDULA_REPR" ColumnName="CEDULA_REPR" />
+                <ScalarProperty Name="TRABAJO_REPR" ColumnName="TRABAJO_REPR" />
+                <ScalarProperty Name="DIR_TRABAJO_REPR" ColumnName="DIR_TRABAJO_REPR" />
+                <ScalarProperty Name="TLF_TRABAJO_REPR" ColumnName="TLF_TRABAJO_REPR" />
+                <ScalarProperty Name="TELEFONO_REPR" ColumnName="TELEFONO_REPR" />
+                <ScalarProperty Name="CELULAR_REPR" ColumnName="CELULAR_REPR" />
+                <ScalarProperty Name="ROL_REPR_REPR" ColumnName="ROL_REPR_REPR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

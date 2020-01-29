@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Sistema_CalificacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ALUMNOS">
+    <Key>
+      <PropertyRef Name="ID_ALUMN" />
+    </Key>
+    <Property Name="ID_ALUMN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ID_REPR" Type="Int32" />
+    <Property Name="NOMBRE_ALUMN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="APELLIDO_ALUMN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CEDULA_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASS_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DIRECCION_ALUMN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FECHA_NACIMINETO_ALUMN" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="REPRESENTANTE" Relationship="Self.FK_ALUMNOS_RELATIONS_REPRESEN" FromRole="ALUMNOS" ToRole="REPRESENTANTE" />
+    <NavigationProperty Name="MATRICULA" Relationship="Self.FK_MATRICUL_RELATIONS_ALUMNOS" FromRole="ALUMNOS" ToRole="MATRICULA" />
+    <NavigationProperty Name="NOTAS" Relationship="Self.FK_NOTAS_TIENE_ALUMNOS" FromRole="ALUMNOS" ToRole="NOTAS" />
+  </EntityType>
+  <EntityType Name="EMPLEADOS">
+    <Key>
+      <PropertyRef Name="ID_EMPL" />
+    </Key>
+    <Property Name="ID_EMPL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="APELLIDO_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CEDULA_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASS_ALUMN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DIRECCION_EMPL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TELEFONO_EMPL" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TITULO_EMPL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MATRICULA">
+    <Key>
+      <PropertyRef Name="ID_MATRICULA" />
+    </Key>
+    <Property Name="ID_MATRICULA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ID_ALUMN" Type="Int32" />
+    <Property Name="ID_NIVEL" Type="Int32" />
+    <Property Name="FECHA_HORA" Type="DateTime" Precision="3" />
+    <Property Name="COSTO" Type="Decimal" Precision="4" Scale="2" />
+    <Property Name="PARALELO" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_MATRICUL_RELATIONS_ALUMNOS" FromRole="MATRICULA" ToRole="ALUMNOS" />
+    <NavigationProperty Name="NIVELES" Relationship="Self.FK_MATRICUL_RELATIONS_NIVELES" FromRole="MATRICULA" ToRole="NIVELES" />
+  </EntityType>
+  <EntityType Name="NIVELES">
+    <Key>
+      <PropertyRef Name="ID_NIVEL" />
+    </Key>
+    <Property Name="ID_NIVEL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE_NIVEL" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="MATRICULA" Relationship="Self.FK_MATRICUL_RELATIONS_NIVELES" FromRole="NIVELES" ToRole="MATRICULA" />
+  </EntityType>
+  <EntityType Name="NOTAS">
+    <Key>
+      <PropertyRef Name="ID_NOTA" />
+    </Key>
+    <Property Name="ID_NOTA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ID_ALUMN" Type="Int32" />
+    <Property Name="ID_PERIODO" Type="Int32" />
+    <Property Name="ID_MATER" Type="Int32" />
+    <Property Name="NOTA" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="FECH_HORA_REG" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_NOTAS_TIENE_ALUMNOS" FromRole="NOTAS" ToRole="ALUMNOS" />
+    <NavigationProperty Name="PERIODOS_NOTAS" Relationship="Self.FK_NOTAS_PERTENECE_PERIODOS" FromRole="NOTAS" ToRole="PERIODOS_NOTAS" />
+  </EntityType>
+  <EntityType Name="PERIODOS_NOTAS">
+    <Key>
+      <PropertyRef Name="ID_PERIODO" />
+    </Key>
+    <Property Name="ID_PERIODO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NUM_PERIODO" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="NOTAS" Relationship="Self.FK_NOTAS_PERTENECE_PERIODOS" FromRole="PERIODOS_NOTAS" ToRole="NOTAS" />
+  </EntityType>
+  <EntityType Name="REPRESENTANTE">
+    <Key>
+      <PropertyRef Name="ID_REPR" />
+    </Key>
+    <Property Name="ID_REPR" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="APELLIDO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CEDULA_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="DIR_TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="TLF_TRABAJO_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="TELEFONO_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CELULAR_REPR" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="ROL_REPR_REPR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ALUMNOS" Relationship="Self.FK_ALUMNOS_RELATIONS_REPRESEN" FromRole="REPRESENTANTE" ToRole="ALUMNOS" />
+  </EntityType>
+  <Association Name="FK_ALUMNOS_RELATIONS_REPRESEN">
+    <End Role="REPRESENTANTE" Type="Self.REPRESENTANTE" Multiplicity="0..1" />
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="REPRESENTANTE">
+        <PropertyRef Name="ID_REPR" />
+      </Principal>
+      <Dependent Role="ALUMNOS">
+        <PropertyRef Name="ID_REPR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATRICUL_RELATIONS_ALUMNOS">
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+    <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ALUMNOS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Principal>
+      <Dependent Role="MATRICULA">
+        <PropertyRef Name="ID_ALUMN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NOTAS_TIENE_ALUMNOS">
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+    <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ALUMNOS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Principal>
+      <Dependent Role="NOTAS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATRICUL_RELATIONS_NIVELES">
+    <End Role="NIVELES" Type="Self.NIVELES" Multiplicity="0..1" />
+    <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NIVELES">
+        <PropertyRef Name="ID_NIVEL" />
+      </Principal>
+      <Dependent Role="MATRICULA">
+        <PropertyRef Name="ID_NIVEL" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NOTAS_PERTENECE_PERIODOS">
+    <End Role="PERIODOS_NOTAS" Type="Self.PERIODOS_NOTAS" Multiplicity="0..1" />
+    <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODOS_NOTAS">
+        <PropertyRef Name="ID_PERIODO" />
+      </Principal>
+      <Dependent Role="NOTAS">
+        <PropertyRef Name="ID_PERIODO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Sistema_CalificacionEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ALUMNOS" EntityType="Self.ALUMNOS" />
+    <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" />
+    <EntitySet Name="MATRICULA" EntityType="Self.MATRICULA" />
+    <EntitySet Name="NIVELES" EntityType="Self.NIVELES" />
+    <EntitySet Name="NOTAS" EntityType="Self.NOTAS" />
+    <EntitySet Name="PERIODOS_NOTAS" EntityType="Self.PERIODOS_NOTAS" />
+    <EntitySet Name="REPRESENTANTE" EntityType="Self.REPRESENTANTE" />
+    <AssociationSet Name="FK_ALUMNOS_RELATIONS_REPRESEN" Association="Self.FK_ALUMNOS_RELATIONS_REPRESEN">
+      <End Role="REPRESENTANTE" EntitySet="REPRESENTANTE" />
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATRICUL_RELATIONS_ALUMNOS" Association="Self.FK_MATRICUL_RELATIONS_ALUMNOS">
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+      <End Role="MATRICULA" EntitySet="MATRICULA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NOTAS_TIENE_ALUMNOS" Association="Self.FK_NOTAS_TIENE_ALUMNOS">
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+      <End Role="NOTAS" EntitySet="NOTAS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATRICUL_RELATIONS_NIVELES" Association="Self.FK_MATRICUL_RELATIONS_NIVELES">
+      <End Role="NIVELES" EntitySet="NIVELES" />
+      <End Role="MATRICULA" EntitySet="MATRICULA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NOTAS_PERTENECE_PERIODOS" Association="Self.FK_NOTAS_PERTENECE_PERIODOS">
+      <End Role="PERIODOS_NOTAS" EntitySet="PERIODOS_NOTAS" />
+      <End Role="NOTAS" EntitySet="NOTAS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

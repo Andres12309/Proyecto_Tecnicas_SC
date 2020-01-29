@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Sistema_CalificacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'Sistema_Calificacion.dbo.Administrador' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="Administrador">
+          <Property Name="CEDULA_Admin" Type="varchar" MaxLength="20" />
+          <Property Name="Password_Admin" Type="varchar" MaxLength="20" />
+        </EntityType>-->
+  <EntityType Name="ALUMNOS">
+    <Key>
+      <PropertyRef Name="ID_ALUMN" />
+    </Key>
+    <Property Name="ID_ALUMN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_REPR" Type="int" />
+    <Property Name="NOMBRE_ALUMN" Type="varchar" MaxLength="20" />
+    <Property Name="APELLIDO_ALUMN" Type="varchar" MaxLength="20" />
+    <Property Name="CEDULA_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="PASS_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="DIRECCION_ALUMN" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="FECHA_NACIMINETO_ALUMN" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EMPLEADOS">
+    <Key>
+      <PropertyRef Name="ID_EMPL" />
+    </Key>
+    <Property Name="ID_EMPL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRE_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="APELLIDO_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="CEDULA_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="PASS_ALUMN" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="DIRECCION_EMPL" Type="varchar" MaxLength="50" />
+    <Property Name="TELEFONO_EMPL" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="TITULO_EMPL" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MATRICULA">
+    <Key>
+      <PropertyRef Name="ID_MATRICULA" />
+    </Key>
+    <Property Name="ID_MATRICULA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_ALUMN" Type="int" />
+    <Property Name="ID_NIVEL" Type="int" />
+    <Property Name="FECHA_HORA" Type="datetime" />
+    <Property Name="COSTO" Type="decimal" Precision="4" Scale="2" />
+    <Property Name="PARALELO" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NIVELES">
+    <Key>
+      <PropertyRef Name="ID_NIVEL" />
+    </Key>
+    <Property Name="ID_NIVEL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRE_NIVEL" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NOTAS">
+    <Key>
+      <PropertyRef Name="ID_NOTA" />
+    </Key>
+    <Property Name="ID_NOTA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_ALUMN" Type="int" />
+    <Property Name="ID_PERIODO" Type="int" />
+    <Property Name="ID_MATER" Type="int" />
+    <Property Name="NOTA" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="FECH_HORA_REG" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PERIODOS_NOTAS">
+    <Key>
+      <PropertyRef Name="ID_PERIODO" />
+    </Key>
+    <Property Name="ID_PERIODO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NUM_PERIODO" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="REPRESENTANTE">
+    <Key>
+      <PropertyRef Name="ID_REPR" />
+    </Key>
+    <Property Name="ID_REPR" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRE_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="APELLIDO_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="CEDULA_REPR" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="TRABAJO_REPR" Type="varchar" MaxLength="20" />
+    <Property Name="DIR_TRABAJO_REPR" Type="varchar" MaxLength="20" />
+    <Property Name="TLF_TRABAJO_REPR" Type="varchar" MaxLength="20" />
+    <Property Name="TELEFONO_REPR" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="CELULAR_REPR" Type="varchar" MaxLength="15" />
+    <Property Name="ROL_REPR_REPR" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_ALUMNOS_RELATIONS_REPRESEN">
+    <End Role="REPRESENTANTE" Type="Self.REPRESENTANTE" Multiplicity="0..1" />
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="REPRESENTANTE">
+        <PropertyRef Name="ID_REPR" />
+      </Principal>
+      <Dependent Role="ALUMNOS">
+        <PropertyRef Name="ID_REPR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATRICUL_RELATIONS_ALUMNOS">
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+    <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ALUMNOS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Principal>
+      <Dependent Role="MATRICULA">
+        <PropertyRef Name="ID_ALUMN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATRICUL_RELATIONS_NIVELES">
+    <End Role="NIVELES" Type="Self.NIVELES" Multiplicity="0..1" />
+    <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NIVELES">
+        <PropertyRef Name="ID_NIVEL" />
+      </Principal>
+      <Dependent Role="MATRICULA">
+        <PropertyRef Name="ID_NIVEL" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NOTAS_PERTENECE_PERIODOS">
+    <End Role="PERIODOS_NOTAS" Type="Self.PERIODOS_NOTAS" Multiplicity="0..1" />
+    <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODOS_NOTAS">
+        <PropertyRef Name="ID_PERIODO" />
+      </Principal>
+      <Dependent Role="NOTAS">
+        <PropertyRef Name="ID_PERIODO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NOTAS_TIENE_ALUMNOS">
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="0..1" />
+    <End Role="NOTAS" Type="Self.NOTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ALUMNOS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Principal>
+      <Dependent Role="NOTAS">
+        <PropertyRef Name="ID_ALUMN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Sistema_CalificacionModelStoreContainer">
+    <EntitySet Name="ALUMNOS" EntityType="Self.ALUMNOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MATRICULA" EntityType="Self.MATRICULA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NIVELES" EntityType="Self.NIVELES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NOTAS" EntityType="Self.NOTAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERIODOS_NOTAS" EntityType="Self.PERIODOS_NOTAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="REPRESENTANTE" EntityType="Self.REPRESENTANTE" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ALUMNOS_RELATIONS_REPRESEN" Association="Self.FK_ALUMNOS_RELATIONS_REPRESEN">
+      <End Role="REPRESENTANTE" EntitySet="REPRESENTANTE" />
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATRICUL_RELATIONS_ALUMNOS" Association="Self.FK_MATRICUL_RELATIONS_ALUMNOS">
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+      <End Role="MATRICULA" EntitySet="MATRICULA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATRICUL_RELATIONS_NIVELES" Association="Self.FK_MATRICUL_RELATIONS_NIVELES">
+      <End Role="NIVELES" EntitySet="NIVELES" />
+      <End Role="MATRICULA" EntitySet="MATRICULA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NOTAS_PERTENECE_PERIODOS" Association="Self.FK_NOTAS_PERTENECE_PERIODOS">
+      <End Role="PERIODOS_NOTAS" EntitySet="PERIODOS_NOTAS" />
+      <End Role="NOTAS" EntitySet="NOTAS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NOTAS_TIENE_ALUMNOS" Association="Self.FK_NOTAS_TIENE_ALUMNOS">
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+      <End Role="NOTAS" EntitySet="NOTAS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
